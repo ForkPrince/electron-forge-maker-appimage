@@ -73,12 +73,8 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
     desktopEntry += "\n";
 
     // icons don't seem to work in AppImages anyway. this is just the default taken from the old AppImage maker.
-    const iconPath = path.join(
-      dir,
-      "../..",
-      "node_modules/app-builder-lib/templates/icons/electron-linux"
-    );
-    const icons = [
+    const iconPath = path.join(path.dirname(require.resolve("app-builder-lib")), "../templates/icons/electron-linux");
+    const icons = config?.icons ?? [
       { file: `${iconPath}/16x16.png`, size: 16 },
       { file: `${iconPath}/32x32.png`, size: 32 },
       { file: `${iconPath}/48x48.png`, size: 48 },

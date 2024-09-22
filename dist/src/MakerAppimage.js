@@ -60,6 +60,7 @@ class MakerAppImage extends maker_base_1.default {
         targetArch, // 'x64'
         packageJSON, targetPlatform, //'linux',
         forgeConfig }) {
+            var _b;
             const executableName = forgeConfig.packagerConfig.executableName || appName;
             // Check for any optional configuration data passed in from forge config, specific to this maker.
             let config;
@@ -87,8 +88,8 @@ class MakerAppImage extends maker_base_1.default {
             }
             desktopEntry += "\n";
             // icons don't seem to work in AppImages anyway. this is just the default taken from the old AppImage maker.
-            const iconPath = path_1.default.join(dir, "../..", "node_modules/app-builder-lib/templates/icons/electron-linux");
-            const icons = [
+            const iconPath = path_1.default.join(path_1.default.dirname(require.resolve("app-builder-lib")), "../templates/icons/electron-linux");
+            const icons = (_b = config === null || config === void 0 ? void 0 : config.icons) !== null && _b !== void 0 ? _b : [
                 { file: `${iconPath}/16x16.png`, size: 16 },
                 { file: `${iconPath}/32x32.png`, size: 32 },
                 { file: `${iconPath}/48x48.png`, size: 48 },
