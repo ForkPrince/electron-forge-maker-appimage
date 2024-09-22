@@ -1,0 +1,19 @@
+{
+    "name": "@prince527/electron-forge-maker-appimage",
+    "version": "1.0.7",
+    "description": "",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "tsc --project tsconfig.json"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@electron-forge/maker-base": "7.5.0",
+        "@electron-forge/shared-types": "7.5.0",
+        "app-builder-lib": "25.1.4"
+    },
+    "devDependencies": {
+        "typescript": "5.6.2"
+    }
+}

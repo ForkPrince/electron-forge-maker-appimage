@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const maker_base_1 = __importDefault(require("@electron-forge/maker-base"));
 const appBuilder = __importStar(require("app-builder-lib/out/util/appBuilder"));
 const fs_1 = require("fs");
+const package_json_1 = __importDefault(require("../package.json"));
 const path_1 = __importDefault(require("path"));
 const isIForgeResolvableMaker = (maker) => maker.hasOwnProperty("name");
 class MakerAppImage extends maker_base_1.default {
@@ -70,7 +71,7 @@ class MakerAppImage extends maker_base_1.default {
                     { file: `${iconPath}/256x256.png`, size: 256 }
                 ]
             };
-            const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === "@prince527/electron-forge-maker-appimage");
+            const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === package_json_1.default.name);
             if (maker !== undefined && isIForgeResolvableMaker(maker))
                 config = Object.assign(Object.assign({}, config), maker.config);
             const mimeTypes = ((_c = (_b = forgeConfig.packagerConfig) === null || _b === void 0 ? void 0 : _b.protocols) !== null && _c !== void 0 ? _c : []).flatMap((p) => p.schemes.map((s) => "x-scheme-handler/" + s.toLowerCase()));

@@ -3,6 +3,7 @@ import MakerBase, { MakerOptions } from "@electron-forge/maker-base";
 import * as appBuilder from "app-builder-lib/out/util/appBuilder";
 import { mkdirSync, existsSync, rmdirSync } from "fs";
 import { MakerAppImageConfig } from "./Config";
+import packageInfo from "../package.json";
 import path from "path";
 
 interface AppImageForgeConfig {
@@ -45,7 +46,7 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
       ]
     }
 
-    const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === "@prince527/electron-forge-maker-appimage");
+    const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === packageInfo.name);
     if (maker !== undefined && isIForgeResolvableMaker(maker)) config = { ...config, ...maker.config };
 
     const mimeTypes = (forgeConfig.packagerConfig?.protocols ?? []).flatMap((p) => p.schemes.map((s) => "x-scheme-handler/" + s.toLowerCase()));
