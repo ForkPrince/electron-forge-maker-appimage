@@ -56,6 +56,7 @@ class MakerAppImage extends maker_base_1.default {
         targetArch, // x64
         packageJSON, targetPlatform, // linux
         forgeConfig }) {
+            var _b, _c;
             const appPath = path_1.default.join(makeDir, `${appName}-${packageJSON.version}-${targetArch}.AppImage`);
             const executable = forgeConfig.packagerConfig.executableName || appName;
             const iconPath = path_1.default.join(path_1.default.dirname(require.resolve("app-builder-lib")), "../templates/icons/electron-linux");
@@ -72,6 +73,7 @@ class MakerAppImage extends maker_base_1.default {
             const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === "electron-forge-maker-appimage");
             if (maker !== undefined && isIForgeResolvableMaker(maker))
                 config = Object.assign(Object.assign({}, config), maker.config);
+            const mimeTypes = ((_c = (_b = forgeConfig.packagerConfig) === null || _b === void 0 ? void 0 : _b.protocols) !== null && _c !== void 0 ? _c : []).flatMap((p) => p.schemes.map((s) => "x-scheme-handler/" + s.toLowerCase()));
             const metadata = {
                 Name: appName,
                 Exec: executable,
@@ -81,7 +83,8 @@ class MakerAppImage extends maker_base_1.default {
                 StartupWMClass: packageJSON.productName,
                 "X-AppImage-Version": packageJSON.version,
                 Comment: packageJSON.description,
-                Categories: "Utility"
+                Categories: "Utility",
+                MimeType: mimeTypes.join(";")
             };
             let desktop = "[Desktop Entry]";
             for (const [key, value] of Object.entries(metadata))

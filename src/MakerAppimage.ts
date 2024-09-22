@@ -5,6 +5,10 @@ import { mkdirSync, existsSync, rmdirSync } from "fs";
 import { MakerAppImageConfig } from "./Config";
 import path from "path";
 
+interface AppImageForgeConfig {
+  icons?: { file: string; size: number }[];
+}
+
 const isIForgeResolvableMaker = (maker: IForgeResolvableMaker | IForgeMaker): maker is IForgeResolvableMaker => maker.hasOwnProperty("name");
 
 export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
@@ -30,7 +34,7 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
 
     const iconPath = path.join(path.dirname(require.resolve("app-builder-lib")), "../templates/icons/electron-linux");
 
-    let config: any = {
+    let config: AppImageForgeConfig = {
       icons: [
         { file: `${iconPath}/16x16.png`, size: 16 },
         { file: `${iconPath}/32x32.png`, size: 32 },
@@ -44,6 +48,8 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
     const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === "electron-forge-maker-appimage");
     if (maker !== undefined && isIForgeResolvableMaker(maker)) config = { ...config, ...maker.config };
 
+    const mimeTypes = (forgeConfig.packagerConfig?.protocols ?? []).flatMap((p) => p.schemes.map((s) => "x-scheme-handler/" + s.toLowerCase()));
+
     const metadata = {
       Name: appName,
       Exec: executable,
@@ -53,7 +59,8 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
       StartupWMClass: packageJSON.productName as string,
       "X-AppImage-Version": packageJSON.version,
       Comment: packageJSON.description,
-      Categories: "Utility"
+      Categories: "Utility",
+      MimeType: mimeTypes.join(";")
     };
 
     let desktop = "[Desktop Entry]";
