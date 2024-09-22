@@ -1,6 +1,6 @@
 {
   "name": "@prince527/electron-forge-maker-appimage",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
