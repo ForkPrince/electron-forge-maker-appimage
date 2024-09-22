@@ -54,7 +54,7 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
       config = maker.config;
     }
 
-    const appFileName = `${appName}-${packageJSON.version}.AppImage`;
+    const appFileName = `${appName}-${packageJSON.version}-${targetArch}.AppImage`;
     const appPath = path.join(makeDir, appFileName);
 
     // construct the desktop file.
