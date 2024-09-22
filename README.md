@@ -19,7 +19,7 @@ Overall, I suspect app-builder-lib isn't meant to work with electron-forge maker
 ## Usage
 
 ```
-yarn add --dev https://github.com/Marcus10110/electron-forge-maker-appimage.git
+npm install https://github.com/ForkPrince/electron-forge-maker-appimage.git --save-dev
 ```
 
 ## example forgeconfig.js

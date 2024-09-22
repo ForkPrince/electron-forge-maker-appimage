@@ -1,9 +1,5 @@
 import MakerBase, { MakerOptions } from "@electron-forge/maker-base";
-import {
-  ForgePlatform,
-  IForgeResolvableMaker,
-  IForgeMaker
-} from "@electron-forge/shared-types";
+import { ForgePlatform, IForgeResolvableMaker, IForgeMaker } from "@electron-forge/shared-types";
 import path from "path";
 import * as appBuilder from "app-builder-lib/out/util/appBuilder";
 import { MakerAppImageConfig } from "./Config";
