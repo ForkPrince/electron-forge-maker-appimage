@@ -53,13 +53,13 @@ class MakerAppImage extends maker_base_1.default {
     isSupportedOnCurrentPlatform() {
         return process.platform === "linux";
     }
-    make({ dir, // '/home/build/Software/monorepo/packages/electron/out/name-linux-x64'
-    appName, // 'name'
-    makeDir, // '/home/build/Software/monorepo/packages/electron/out/make',
-    targetArch, // 'x64'
-    packageJSON, targetPlatform, //'linux',
-    forgeConfig }) {
-        return __awaiter(this, void 0, void 0, function* () {
+    make(_a) {
+        return __awaiter(this, arguments, void 0, function* ({ dir, // '/home/build/Software/monorepo/packages/electron/out/name-linux-x64'
+        appName, // 'name'
+        makeDir, // '/home/build/Software/monorepo/packages/electron/out/make',
+        targetArch, // 'x64'
+        packageJSON, targetPlatform, //'linux',
+        forgeConfig }) {
             const executableName = forgeConfig.packagerConfig.executableName || appName;
             // Check for any optional configuration data passed in from forge config, specific to this maker.
             let config;
@@ -67,7 +67,7 @@ class MakerAppImage extends maker_base_1.default {
             if (maker !== undefined && isIForgeResolvableMaker(maker)) {
                 config = maker.config;
             }
-            const appFileName = `${appName}-${packageJSON.version}.AppImage`;
+            const appFileName = `${appName}-${packageJSON.version}-${targetArch}.AppImage`;
             const appPath = path_1.default.join(makeDir, appFileName);
             // construct the desktop file.
             const desktopMeta = {
@@ -111,13 +111,13 @@ class MakerAppImage extends maker_base_1.default {
             }
             const args = [
                 "appimage",
-                "--stage",
+                "--stage", // '/home/build/Software/monorepo/packages/electron/out/make/__appImage-x64',
                 stageDir,
-                "--arch",
+                "--arch", // 'x64'
                 "x64",
-                "--output",
+                "--output", // '/home/build/Software/monorepo/packages/electron/out/make/name-2.0.6.AppImage',
                 appPath,
-                "--app",
+                "--app", // '/home/build/Software/monorepo/packages/electron/out/name-linux-x64',
                 dir,
                 "--configuration",
                 JSON.stringify({
