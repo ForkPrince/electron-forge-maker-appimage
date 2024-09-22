@@ -11,7 +11,7 @@
   "dependencies": {
     "@electron-forge/maker-base": "^7.1.0",
     "@electron-forge/shared-types": "^7.1.0",
-    "app-builder-lib": "^21.2.0"
+    "app-builder-lib": "^24.13.2"
   },
   "devDependencies": {
     "enquirer": "^2.4.1",
