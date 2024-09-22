@@ -45,7 +45,7 @@ export default class MakerAppImage extends MakerBase<MakerAppImageConfig> {
       ]
     }
 
-    const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === "electron-forge-maker-appimage");
+    const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === "@prince527/electron-forge-maker-appimage");
     if (maker !== undefined && isIForgeResolvableMaker(maker)) config = { ...config, ...maker.config };
 
     const mimeTypes = (forgeConfig.packagerConfig?.protocols ?? []).flatMap((p) => p.schemes.map((s) => "x-scheme-handler/" + s.toLowerCase()));

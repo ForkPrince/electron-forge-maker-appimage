@@ -70,7 +70,7 @@ class MakerAppImage extends maker_base_1.default {
                     { file: `${iconPath}/256x256.png`, size: 256 }
                 ]
             };
-            const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === "electron-forge-maker-appimage");
+            const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === "@prince527/electron-forge-maker-appimage");
             if (maker !== undefined && isIForgeResolvableMaker(maker))
                 config = Object.assign(Object.assign({}, config), maker.config);
             const mimeTypes = ((_c = (_b = forgeConfig.packagerConfig) === null || _b === void 0 ? void 0 : _b.protocols) !== null && _c !== void 0 ? _c : []).flatMap((p) => p.schemes.map((s) => "x-scheme-handler/" + s.toLowerCase()));
