@@ -36,14 +36,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const maker_base_1 = __importDefault(require("@electron-forge/maker-base"));
-const path_1 = __importDefault(require("path"));
 const appBuilder = __importStar(require("app-builder-lib/out/util/appBuilder"));
 const fs_1 = require("fs");
-const child_process_1 = require("child_process");
-const makerPackageName = "electron-forge-maker-appimage";
-const isIForgeResolvableMaker = (maker) => {
-    return maker.hasOwnProperty("name");
-};
+const path_1 = __importDefault(require("path"));
+const isIForgeResolvableMaker = (maker) => maker.hasOwnProperty("name");
 class MakerAppImage extends maker_base_1.default {
     constructor() {
         super(...arguments);
@@ -54,88 +50,69 @@ class MakerAppImage extends maker_base_1.default {
         return process.platform === "linux";
     }
     make(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ dir, // '/home/build/Software/monorepo/packages/electron/out/name-linux-x64'
-        appName, // 'name'
-        makeDir, // '/home/build/Software/monorepo/packages/electron/out/make',
-        targetArch, // 'x64'
-        packageJSON, targetPlatform, //'linux',
+        return __awaiter(this, arguments, void 0, function* ({ dir, // /home/build/Software/monorepo/packages/electron/out/name-linux-x64
+        appName, // name
+        makeDir, // /home/build/Software/monorepo/packages/electron/out/make
+        targetArch, // x64
+        packageJSON, targetPlatform, // linux
         forgeConfig }) {
-            var _b;
-            const executableName = forgeConfig.packagerConfig.executableName || appName;
-            // Check for any optional configuration data passed in from forge config, specific to this maker.
-            let config;
-            const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === makerPackageName);
-            if (maker !== undefined && isIForgeResolvableMaker(maker)) {
-                config = maker.config;
-            }
-            const appFileName = `${appName}-${packageJSON.version}-${targetArch}.AppImage`;
-            const appPath = path_1.default.join(makeDir, appFileName);
-            // construct the desktop file.
-            const desktopMeta = {
+            const appPath = path_1.default.join(makeDir, `${appName}-${packageJSON.version}-${targetArch}.AppImage`);
+            const executable = forgeConfig.packagerConfig.executableName || appName;
+            const iconPath = path_1.default.join(path_1.default.dirname(require.resolve("app-builder-lib")), "../templates/icons/electron-linux");
+            let config = {
+                icons: [
+                    { file: `${iconPath}/16x16.png`, size: 16 },
+                    { file: `${iconPath}/32x32.png`, size: 32 },
+                    { file: `${iconPath}/48x48.png`, size: 48 },
+                    { file: `${iconPath}/64x64.png`, size: 64 },
+                    { file: `${iconPath}/128x128.png`, size: 128 },
+                    { file: `${iconPath}/256x256.png`, size: 256 }
+                ]
+            };
+            const maker = forgeConfig.makers.find(maker => isIForgeResolvableMaker(maker) && maker.name === "electron-forge-maker-appimage");
+            if (maker !== undefined && isIForgeResolvableMaker(maker))
+                config = Object.assign(Object.assign({}, config), maker.config);
+            const metadata = {
                 Name: appName,
-                Exec: executableName,
+                Exec: executable,
                 Terminal: "false",
                 Type: "Application",
-                Icon: executableName,
+                Icon: executable,
                 StartupWMClass: packageJSON.productName,
                 "X-AppImage-Version": packageJSON.version,
                 Comment: packageJSON.description,
                 Categories: "Utility"
             };
-            let desktopEntry = `[Desktop Entry]`;
-            for (const name of Object.keys(desktopMeta)) {
-                desktopEntry += `\n${name}=${desktopMeta[name]}`;
-            }
-            desktopEntry += "\n";
-            // icons don't seem to work in AppImages anyway. this is just the default taken from the old AppImage maker.
-            const iconPath = path_1.default.join(path_1.default.dirname(require.resolve("app-builder-lib")), "../templates/icons/electron-linux");
-            const icons = (_b = config === null || config === void 0 ? void 0 : config.icons) !== null && _b !== void 0 ? _b : [
-                { file: `${iconPath}/16x16.png`, size: 16 },
-                { file: `${iconPath}/32x32.png`, size: 32 },
-                { file: `${iconPath}/48x48.png`, size: 48 },
-                { file: `${iconPath}/64x64.png`, size: 64 },
-                { file: `${iconPath}/128x128.png`, size: 128 },
-                { file: `${iconPath}/256x256.png`, size: 256 }
-            ];
-            const stageDir = path_1.default.join(makeDir, "__appImage-x64");
-            if (!(0, fs_1.existsSync)(makeDir)) {
+            let desktop = "[Desktop Entry]";
+            for (const [key, value] of Object.entries(metadata))
+                desktop += `\n${key}=${value}`;
+            desktop += "\n";
+            if (!(0, fs_1.existsSync)(makeDir))
                 (0, fs_1.mkdirSync)(makeDir, { recursive: true });
-            }
-            if ((0, fs_1.existsSync)(stageDir)) {
+            const stageDir = path_1.default.join(makeDir, "__appImage-x64");
+            if ((0, fs_1.existsSync)(stageDir))
                 (0, fs_1.rmdirSync)(stageDir);
-            }
             (0, fs_1.mkdirSync)(stageDir, { recursive: true });
-            // if the user passed us a chmodChromeSandbox parameter, use that to modify the permissions of chrome-sandbox.
-            // this sets up the ability to run the application conditionally with --no-sandbox on select systems.
-            if (config !== undefined && config.chmodChromeSandbox !== undefined) {
-                yield (0, child_process_1.exec)(`chmod ${config.chmodChromeSandbox} ${path_1.default.join(dir, 'chrome-sandbox')}`);
-            }
-            const args = [
+            yield appBuilder.executeAppBuilderAsJson([
                 "appimage",
-                "--stage", // '/home/build/Software/monorepo/packages/electron/out/make/__appImage-x64',
+                "--stage", // /home/build/Software/monorepo/packages/electron/out/make/__appImage-x64
                 stageDir,
-                "--arch", // 'x64'
+                "--arch", // x64
                 "x64",
-                "--output", // '/home/build/Software/monorepo/packages/electron/out/make/name-2.0.6.AppImage',
+                "--output", // /home/build/Software/monorepo/packages/electron/out/make/name-2.0.6.AppImage
                 appPath,
-                "--app", // '/home/build/Software/monorepo/packages/electron/out/name-linux-x64',
+                "--app", // /home/build/Software/monorepo/packages/electron/out/name-linux-x64
                 dir,
                 "--configuration",
                 JSON.stringify({
                     productName: appName,
                     productFilename: appName,
-                    desktopEntry: desktopEntry,
-                    executableName: executableName,
-                    icons: icons,
+                    desktopEntry: desktop,
+                    executableName: executable,
+                    icons: config.icons,
                     fileAssociations: []
                 })
-            ];
-            // the --template option allows us to replace AppRun bash script with a custom version, e.g. a libstdc++ bootstrapper.
-            if (config !== undefined && config.template) {
-                args.push("--template");
-                args.push(config.template);
-            }
-            const result = yield appBuilder.executeAppBuilderAsJson(args);
+            ]);
             return [appPath];
         });
     }
