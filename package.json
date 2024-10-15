@@ -1,19 +1,28 @@
 {
-  "name": "@prince527/electron-forge-maker-appimage",
-  "version": "1.0.8",
-  "description": "",
+  "name": "@forkprince/electron-forge-maker-appimage",
+  "version": "1.0.9",
+  "description": "An electron-forge builder for AppImage.",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ForkPrince/electron-forge-maker-appimage.git"
+  },
+  "author": "Prince527",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ForkPrince/electron-forge-maker-appimage/issues"
+  },
+  "homepage": "https://github.com/ForkPrince/electron-forge-maker-appimage#readme",
   "dependencies": {
     "@electron-forge/maker-base": "7.5.0",
     "@electron-forge/shared-types": "7.5.0",
-    "app-builder-lib": "25.1.4"
+    "app-builder-lib": "^25.1.8",
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "typescript": "5.6.2"
+    "typescript": "^5.6.3"
   }
 }
