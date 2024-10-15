@@ -1,6 +1,6 @@
 {
   "name": "@forkprince/electron-forge-maker-appimage",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "An electron-forge builder for AppImage.",
   "main": "dist/index.js",
   "scripts": {

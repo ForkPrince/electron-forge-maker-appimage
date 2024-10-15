@@ -10,7 +10,7 @@ This project is based on several existing projects:
 ## Usage
 
 ```bash
-npm install @prince527/electron-forge-maker-appimage --save-dev
+npm install @forkprince/electron-forge-maker-appimage --save-dev
 ```
 
 ## forge.config.js
@@ -18,7 +18,7 @@ npm install @prince527/electron-forge-maker-appimage --save-dev
 ```js
 makers: [
   {
-    name: "@prince527/electron-forge-maker-appimage",
+    name: "@forkprince/electron-forge-maker-appimage",
     platforms: ["linux"],
     config: {
       productName: "Re:Lunatic Player",
